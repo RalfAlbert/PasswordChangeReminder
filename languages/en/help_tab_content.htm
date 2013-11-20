@@ -1,0 +1,24 @@
+<p><strong>Settings for the Password Changing Reminder</strong></p>
+<h3>Main Settings</h3>
+<h4>Interval</h4>
+<p>Set the interval a password is at least  to be changed. The interval can be set in days, weeks, months and years.<br>
+However, please note that the plugin converts the units "weeks", "months" and "years" internally in days.
+Thus, for example, will three months convert internally into 90 days. Months with 31 or 28 days are not taken into account. This
+means that 4 weeks (4x7 days = 28 days) are not the same as 1 month (30 days). This can cause that the reminder is displayed a few days earlier or later as expected. A more accurate calculation is possibly implemented in a later version.<br>
+The conversion is done with the following values​​:</p>
+<ul>
+<li>Weeks: 7 days (e.g.: 3 weeks will be converted to 21 days)</li>
+<li>Month: 30 days (e.g.: 3 months will be converted to 90 days)</li>
+<li>Year: 365 days (e.g.: 3 years will be converted to 1095 days)</li>
+</ul>
+<hr>
+<h3>Extra Settings</h3>
+<h4>Ignore nag screen</h4>
+<p>Normally users can ignore (hide) the nag screen. If you want to force the user changing the password, disable this option.</p>
+
+<h4>Display the nag screen again after...</h4>
+<p>You can specify here a time period after the nag screen appear after it has been hidden by the user. The period is specified in hours and minutes. If you enter a non valid value, the default value will be used.</p>
+
+<h4>Extra Message</h4>
+<p>Here you can enter an additional message which will be displayed in the nag screen. So you can point to binding rules or provide a detailed reasoning why it is important to regularly change the password.<br>If you do not want to display an extra message, leave this field blank<br></p>  
+<p>Some HTML for formatting is allowed.</p>

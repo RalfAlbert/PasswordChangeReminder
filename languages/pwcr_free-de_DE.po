@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Password Change Reminder v0.1.20131120\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-11-20 10:39:05+0000\n"
+"Last-Translator: verantwortlicher <neun12@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: CSL v1.x\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: classes/backend.php:100
+#@ pwcr_free
+msgid "Interval settings"
+msgstr "Interval Einstellungen"
+
+#: classes/backend.php:101
+#@ pwcr_free
+msgid "Extras settings"
+msgstr "Zusätzliche Einstellungen"
+
+#: classes/backend.php:107
+#@ pwcr_free
+msgid "Interval"
+msgstr "Intervall "
+
+#: classes/backend.php:108
+#@ pwcr_free
+msgid "Ignore Nag"
+msgstr "Hinweis ignorieren"
+
+#: classes/backend.php:109
+#@ pwcr_free
+msgid "Ignore Timeout"
+msgstr "Hinweis wieder einblenden"
+
+#: classes/backend.php:110
+#@ pwcr_free
+msgid "Extra Message"
+msgstr "Zusätzliche Nachricht"
+
+#: classes/backend.php:268
+#@ pwcr_free
+msgid "Save Changes"
+msgstr "Änderungen Speichern"
+
+#: classes/backend.php:316
+#@ pwcr_free
+msgid "Day(s)"
+msgstr "Tag(e)"
+
+#: classes/backend.php:317
+#@ pwcr_free
+msgid "Week(s)"
+msgstr "Woche(n)"
+
+#: classes/backend.php:318
+#@ pwcr_free
+msgid "Month(s)"
+msgstr "Monat(e)"
+
+#: classes/backend.php:319
+#@ pwcr_free
+msgid "Year(s)"
+msgstr "Jahr(e)"
+
+#: classes/backend.php:363
+#@ pwcr_free
+msgid "User can ignore (hide) the nag screen?"
+msgstr "Benutzer können den Hinweis ignorieren (ausblenden) ?"
+
+#: classes/backend.php:377
+#@ pwcr_free
+msgid "After which periode should an ignored nag screen will be displayed again (hh:mm)"
+msgstr "Nach welcher Zeitspanne soll ein ignorierter (ausgeblendeter) Hinweis weiser angezeigt werden (hh:mm)"
+
+#: classes/backend.php:378
+#@ pwcr_free
+msgid "hh:mm"
+msgstr "hh:mm"
+
+#: classes/backend.php:410
+#@ pwcr_free
+msgid "Enter an additional message for the user, it will be displayed in the nag screen."
+msgstr "Geben Sie eine zusätzliche Nachricht ein, diese wird im Hinweis angezeigt."
+
+#: classes/backend.php:412
+#@ pwcr_free
+msgid "Keep blank for no message. Some HTML is allowed."
+msgstr "Lassen Sie das Feld frei wenn Sie keine Nachricht angeben möchten. Einige HTML-Befehle sind erlaubt."
+
+#: classes/options_handler.php:80
+#@ pwcr_free
+msgid "We expect that the password is changed at least every 3 months."
+msgstr "Wir erwarten dass das Passwort alle 3 Monate geändert wird."
+
+#: classes/pwcr.php:204
+#@ pwcr_free
+msgid "Your password is outdated!"
+msgstr "Ihr Passwort ist veraltet!"
+
+#: classes/pwcr.php:205
+#, php-format
+#@ pwcr_free
+msgid "The password is %d days old. "
+msgstr "Das Passwort ist %d Tage alt. "
+
+#: classes/pwcr.php:208
+#, php-format
+#@ pwcr_free
+msgid "1 year."
+msgid_plural "%d years."
+msgstr[0] "1 Jahr"
+msgstr[1] "%d Jahre"
+
+#: classes/pwcr.php:210
+#, php-format
+#@ pwcr_free
+msgid "1 month."
+msgid_plural "%d months."
+msgstr[0] "1 Monat"
+msgstr[1] "%d Monate"
+
+#: classes/pwcr.php:216
+#@ pwcr_free
+msgid "This means your password is older than "
+msgstr "Dies bedeutet das ihr Passwort älter ist als "
+
+#: classes/pwcr.php:241
+#@ pwcr_free
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: classes/pwcr.php:242
+#@ pwcr_free
+msgid "Ignore"
+msgstr "Ignorieren"
+
+#. translators: plugin header field 'PluginURI'
+#. translators: plugin header field 'AuthorURI'
+#: pwchangereminder.php:0
+#@ pwcr_free
+msgid "http://yoda.neun12.de"
+msgstr "http://yoda.neun12.de"
+
+#. translators: plugin header field 'Author'
+#: pwchangereminder.php:0
+#@ pwcr_free
+msgid "Ralf Albert"
+msgstr "Ralf Albert"
+
+#: classes/backend.php:151
+#: classes/backend.php:152
+#@ pwcr_free
+msgid "PW Change Reminder"
+msgstr "PW Änderungs Eerinnerung"
+
+#. translators: plugin header field 'Name'
+#: pwchangereminder.php:0
+#@ pwcr_free
+msgid "Password Change Reminder"
+msgstr "Passwort Änderungs Erinnerung"
+
+#. translators: plugin header field 'Description'
+#: pwchangereminder.php:0
+#@ pwcr_free
+msgid "Reminds the user to frequently change the password. Display a nag screen if the password is to old."
+msgstr "Erinnert die Benutzer daran regelmäßig ihr Passwort zu ändern. Zeigt einen Hinweis (Nörgelbildschirm) an falls das Passwort zu alt ist."
+
+#. translators: plugin header field 'Version'
+#: pwchangereminder.php:0
+#@ pwcr_free
+msgid "0.1.20131120"
+msgstr "0.1.20131120"
+
