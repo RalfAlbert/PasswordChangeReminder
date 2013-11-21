@@ -50,41 +50,6 @@ class Backend extends Options_Handler
 	}
 
 	/**
-	 * Initialize the translation
-	 * - Load plugin textdomain
-	 * - Read translated text files for backend
-	 * @return boolean Always true
-	 */
-	public function init_translation() {
-
-		// init translation
-		$basename    = plugin_dir_path( dirname( __FILE__ ) );
-		$lang_dir_tf = $basename . '/languages';
-
-		$lang = ( defined( 'WPLANG' ) ) ?
-		    substr( WPLANG, 0, 2 ) : 'en';
-
-		// check if a directory with the current language exists
-		if( is_dir( $lang_dir_tf . '/' . $lang ) )
-			$lang_dir_tf .= '/' . $lang . '/';
-		else
-			$lang_dir_tf .= '/en/';
-
-		$html_files = glob( $lang_dir_tf . '*.{htm,html}', GLOB_BRACE );
-
-		foreach ( $html_files as $file ) {
-			preg_match( '#.+/([^/]+)\.html?$#Uuis', $file, $match );
-
-			if ( isset( $match[1] ) && ! empty( $match[1] ) ) {
-				$this->html_files[ $match[1] ] = $match[0];
-			}
-		}
-
-		return true;
-
-	}
-
-	/**
 	 * Initialise the WordPress Settings-API
 	 * - Register the settings
 	 * - Register the sections
@@ -177,6 +142,41 @@ class Backend extends Options_Handler
 		    11,
 		    0
 		);
+
+		return true;
+
+	}
+
+	/**
+	 * Initialize the translation
+	 * - Load plugin textdomain
+	 * - Read translated text files for backend
+	 * @return boolean Always true
+	 */
+	public function init_translation() {
+
+		// init translation
+		$basename    = plugin_dir_path( dirname( __FILE__ ) );
+		$lang_dir_tf = $basename . '/languages';
+
+		$lang = ( defined( 'WPLANG' ) ) ?
+		    substr( WPLANG, 0, 2 ) : 'en';
+
+		// check if a directory with the current language exists
+		if( is_dir( $lang_dir_tf . '/' . $lang ) )
+			$lang_dir_tf .= '/' . $lang . '/';
+		else
+			$lang_dir_tf .= '/en/';
+
+		$html_files = glob( $lang_dir_tf . '*.{htm,html}', GLOB_BRACE );
+
+		foreach ( $html_files as $file ) {
+			preg_match( '#.+/([^/]+)\.html?$#Uuis', $file, $match );
+
+			if ( isset( $match[1] ) && ! empty( $match[1] ) ) {
+				$this->html_files[ $match[1] ] = $match[0];
+			}
+		}
 
 		return true;
 
