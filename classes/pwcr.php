@@ -20,7 +20,10 @@ use PwCR\Options_Handler\Options_Handler;
 
 class PwCR extends Options_Handler
 {
-
+	/**
+	 * Age of the password
+	 * @var string
+	 */
 	protected $pw_age = null;
 
 	/**
@@ -31,6 +34,7 @@ class PwCR extends Options_Handler
 		add_action( 'admin_init', array( $this, 'init_translation' ), 1, 0 );
 		add_action( 'admin_init', array( $this, 'add_scripts' ), 1, 0 );
 		add_action( 'admin_init', array( $this, 'check_pw_age' ), 1, 0 );
+
 		add_action( 'wp_ajax_ignore_nag', array( $this, 'ignore_nag' ), 10, 0 );
 
 		add_action( 'personal_options_update', array( $this, 'pw_was_updated' ), 1, 1 );
