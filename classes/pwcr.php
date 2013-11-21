@@ -203,7 +203,8 @@ class PwCR extends Options_Handler
 	 */
 	public function display_nag() {
 
-		wp_enqueue_script( 'pwcr' );
+		if( true == self::get_option( 'user_can_ignore_nag' ) )
+			wp_enqueue_script( 'pwcr' );
 
 		$out  = sprintf( '<h3>%s</h3>', __( 'Your password is outdated!', 'pwcr_free' ) );
 		$out .= sprintf( '<p>' . __( 'The password is %d days old. ', 'pwcr_free' ), $this->pw_age->days );
