@@ -30,13 +30,13 @@ class Options_Handler
 	const USER_META_KEY = 'PwCR_user_meta';
 
 	/**
-	 * Option values from db
+	 * Option values from db table options
 	 * @var array
 	 */
 	public static $options = array();
 
 	/**
-	 * User metas from usermeta
+	 * Userdata from db table usermeta
 	 * @var array
 	 */
 	public static $umeta = array();
