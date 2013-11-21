@@ -9,7 +9,7 @@
  * @subpackage PwCr\Backend
  * @author     Ralf Albert <me@neun12.de>
  * @license    GPLv3 http://www.gnu.org/licenses/gpl-3.0.txt
- * @version    0.1.20131115
+ * @version    0.1.20131121
  * @link       http://wordpress.com
  */
 
@@ -44,7 +44,6 @@ class Backend extends Options_Handler
 	 */
 	public function __construct() {
 
-		add_action( 'admin_init', array( $this, 'init_translation' ), 1, 0 );
 		add_action( 'admin_init', array( $this, 'settings_api_init' ), 1, 0 );
 		add_action( 'admin_menu', array( $this, 'add_menu_page' ), 10, 0 );
 
@@ -65,11 +64,11 @@ class Backend extends Options_Handler
 		$lang = ( defined( 'WPLANG' ) ) ?
 		    substr( WPLANG, 0, 2 ) : 'en';
 
+		// check if a directory with the current language exists
 		if( is_dir( $lang_dir_tf . '/' . $lang ) )
 			$lang_dir_tf .= '/' . $lang . '/';
 		else
 			$lang_dir_tf .= '/en/';
-
 
 		$html_files = glob( $lang_dir_tf . '*.{htm,html}', GLOB_BRACE );
 
@@ -157,10 +156,25 @@ class Backend extends Options_Handler
 		    'bottom'
 		);
 
+		/*
+		 * init_translöation only loads he translated text files
+		 * It's not neccessary to initialize the translation on
+		 * admin_init (as with load_plugin_textdomain() )
+		 * Make sure the translation is initialized before the
+		 * help tab is added. The help tab depends on the translated
+		 * text files.
+		 */
+		add_action(
+			'load-'.$this->pagehook,
+			array( $this, 'init_translation' ),
+			10,
+			0
+		);
+
 		add_action(
 		    'load-'.$this->pagehook,
 		    array( $this, 'add_help_tab' ),
-		    10,
+		    11,
 		    0
 		);
 
