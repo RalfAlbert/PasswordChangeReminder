@@ -2,7 +2,7 @@
 /**
  * WordPress-Plugin Password Change Reminder
  *
- * PHP version 5.4
+ * PHP version 5.3
  *
  * @category   PHP
  * @package    WordPress

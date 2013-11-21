@@ -31,12 +31,16 @@ class PwCR extends Options_Handler
 	 */
 	public function __construct() {
 
-		add_action( 'admin_init', array( $this, 'init_translation' ), 1, 0 );
+		// sorry for that. but translation have to be loaded very early or it won't work
+		add_action( 'init', array( $this, 'init_translation' ), 1, 0 );
+
 		add_action( 'admin_init', array( $this, 'add_scripts' ), 1, 0 );
 		add_action( 'admin_init', array( $this, 'check_pw_age' ), 1, 0 );
 
+		// ajax
 		add_action( 'wp_ajax_ignore_nag', array( $this, 'ignore_nag' ), 10, 0 );
 
+		// other
 		add_action( 'personal_options_update', array( $this, 'pw_was_updated' ), 1, 1 );
 		add_action( 'edit_user_profile_update', array( $this, 'pw_was_updated'), 1, 1 ); // maybe an admin update the pw for you
 
