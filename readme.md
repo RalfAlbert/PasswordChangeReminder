@@ -26,5 +26,7 @@ If you want to install the plugin manually:
 
 ### 0.1 ###
 * First public version
+0.1.20131120 - First commit to GitHub
+0.1.20131121 - Some optimazation; adding/edit documentation
 
 ## Arbitrary section ##
