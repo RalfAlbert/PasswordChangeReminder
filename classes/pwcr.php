@@ -68,7 +68,7 @@ class PwCR extends Options_Handler
 		$script_dir = basename( $basename ) . "/scripts/pwcr_backend$min.js";
 		$script_url = plugins_url( $script_dir  );
 
-		wp_register_script( 'pwcr', $script_url, 'jquery', false, true );
+		wp_register_script( 'pwcr', $script_url, array( 'jquery' ), false, true );
 
 	}
 
