@@ -34,9 +34,8 @@ class PwCR extends Options_Handler
 		// sorry for that. but translation have to be loaded very early or it won't work
 		add_action( 'init', array( $this, 'init_translation' ), 1, 0 );
 
-		$hook = ( is_admin() ) ? 'admin_init' : 'init';
-		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 1, 0 );
-		add_action( $hook, array( $this, 'check_pw_age' ), 1, 0 );
+		add_action( ( is_admin() ? 'admin_enqueue_scripts' : 'wp_enqueue_scripts' ), array( $this, 'add_scripts' ), 1, 0 );
+		add_action( ( is_admin() ? 'admin_init' : 'init' ), array( $this, 'check_pw_age' ), 1, 0 );
 
 		// ajax
 		add_action( 'wp_ajax_ignore_nag', array( $this, 'ignore_nag' ), 10, 0 );
