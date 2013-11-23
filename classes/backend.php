@@ -195,7 +195,7 @@ class Backend extends Options_Handler
 
 		$screen->add_help_tab(
 		    array(
-                'id'       => 'pwcr_free',
+                'id'       => 'pwcr',
                 'title'    => 'PW Change Reminder',
                 'content'  => $this->get_text( 'help_tab_content' ),
             )
