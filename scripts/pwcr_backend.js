@@ -1,6 +1,6 @@
 /**
  * jQuery for plugin Password Changing Reminder
- * @version 2013-11-16
+ * @version 2013-11-23
  */
 jQuery( document ).ready(
 	function($){
