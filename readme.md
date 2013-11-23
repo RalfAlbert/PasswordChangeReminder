@@ -25,8 +25,10 @@ If you want to install the plugin manually:
 ## Changelog ##
 
 ### 0.1 ###
-* First public version
-0.1.20131120 - First commit to GitHub
-0.1.20131121 - Some optimazation; adding/edit documentation
+* 0.1.20131120 - First commit to GitHub
+* 0.1.20131121 - Some optimazation; adding/edit documentation
+
+### 0.2 ###
+* 0.2.20131123 - Add nag screen to frontend
 
 ## Arbitrary section ##
