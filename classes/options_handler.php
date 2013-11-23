@@ -77,7 +77,7 @@ class Options_Handler
 		$default_options = array(
 				'pw_max_age'          => 90,		        // integer; days
 				'pw_max_age_periode'  => 'days',        // string (one of days, weeks, months, years)
-				'extra_message'       => __( 'We expect that the password is changed at least every 3 months.', 'pwcr_free' ),
+				'extra_message'       => __( 'We expect that the password is changed at least every 3 months.', 'pwchangereminder' ),
 				'user_can_ignore_nag' => true,          // boolean
 				'max_ignore_time'     => '00:15',		    // in hh:mm; 2 digits w. leading 0
 				'frontend_allowed'    => true,          // true if the nag scrteen should also been displayed on frontend

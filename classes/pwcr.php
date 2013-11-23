@@ -53,7 +53,7 @@ class PwCR extends Options_Handler
 
 		$basename    = plugin_dir_path( dirname( __FILE__ ) );
 		$lang_dir_td = basename( $basename ) . '/languages';
-		load_plugin_textdomain( 'pwcr_free', false, $lang_dir_td );
+		load_plugin_textdomain( 'pwchangereminder', false, $lang_dir_td );
 
 	}
 
@@ -231,19 +231,19 @@ class PwCR extends Options_Handler
 		if( true == self::get_option( 'user_can_ignore_nag' ) )
 			wp_enqueue_script( 'pwcr' );
 
-		$out  = sprintf( '<h3>%s</h3>', __( 'Your password is outdated!', 'pwcr_free' ) );
-		$out .= sprintf( '<p>' . __( 'The password is %d days old. ', 'pwcr_free' ), $this->pw_age->days );
+		$out  = sprintf( '<h3>%s</h3>', __( 'Your password is outdated!', 'pwchangereminder' ) );
+		$out .= sprintf( '<p>' . __( 'The password is %d days old. ', 'pwchangereminder' ), $this->pw_age->days );
 
 		if ( $this->pw_age->y > 0 ) {
-			$inner = sprintf( _n( '1 year.', '%d years.', $this->pw_age->y, 'pwcr_free' ), $this->pw_age->y );
+			$inner = sprintf( _n( '1 year.', '%d years.', $this->pw_age->y, 'pwchangereminder' ), $this->pw_age->y );
 		} elseif ( $this->pw_age->m > 0 ) {
-			$inner = sprintf( _n( '1 month.', '%d months.', $this->pw_age->m, 'pwcr_free' ), $this->pw_age->m );
+			$inner = sprintf( _n( '1 month.', '%d months.', $this->pw_age->m, 'pwchangereminder' ), $this->pw_age->m );
 		} else {
 			$inner = '';
 		}
 
 		if ( !empty( $inner ) )
-			$out .= __( 'This means your password is older than ', 'pwcr_free' ) . $inner;
+			$out .= __( 'This means your password is older than ', 'pwchangereminder' ) . $inner;
 
 		$out .= '</p>';
 
@@ -252,7 +252,6 @@ class PwCR extends Options_Handler
 			$out .= sprintf( '<p>%s</p>', $extra_message );
 
 		echo sprintf( '<div class="error" id="pwcr_nag">%s<hr>%s</div>', $out, $this->create_nag_links() );
-
 
 	}
 
@@ -265,8 +264,8 @@ class PwCR extends Options_Handler
 		$ignoring_allowed = self::get_option( 'user_can_ignore_nag' );
 
 		$links = array(
-				'change_pw' => sprintf( '<a href="%s" id="pwcr_change_pw" class="button">%s</a>', admin_url( '/profile.php' ), __( 'Change password', 'pwcr_free' ) ),
-				'ignore'    => sprintf( '<a href="#" id="pwcr_ignore_nag" class="button">%s</a>', __( 'Ignore', 'pwcr_free' ) ),
+				'change_pw' => sprintf( '<a href="%s" id="pwcr_change_pw" class="button">%s</a>', admin_url( '/profile.php' ), __( 'Change password', 'pwchangereminder' ) ),
+				'ignore'    => sprintf( '<a href="#" id="pwcr_ignore_nag" class="button">%s</a>', __( 'Ignore', 'pwchangereminder' ) ),
 		);
 
 		// if the user is not allowed to ignore the nag, remove the ignore nag link

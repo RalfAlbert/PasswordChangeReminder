@@ -20,7 +20,7 @@
  * Version:     0.1.20131121
  * Author:      Ralf Albert
  * Author URI: 	http://yoda.neun12.de
- * Text Domain: pwcr_free
+ * Text Domain: pwchangereminder
  * Domain Path: /languages
  * Network:     false
  * License:     GPLv3
