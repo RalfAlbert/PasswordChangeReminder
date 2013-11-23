@@ -69,9 +69,10 @@ class Backend extends Options_Handler
 		$fields = array(
 				// field-id => in-section, title, callback
 				'field_1'	=> array( 'section' => 'interval', 'title' => __( 'Interval', 'pwchangereminder' ), 'callback' => 'interval_field' ),
-				'field_2'	=> array( 'section' => 'extras', 'title' => __( 'Ignore Nag', 'pwchangereminder' ), 'callback' => 'ignore_field' ),
-				'field_3' => array( 'section' => 'extras', 'title' => __( 'Ignore Timeout', 'pwchangereminder' ), 'callback' => 'ignore_timeout_field' ),
-				'field_4' => array( 'section' => 'extras', 'title' => __( 'Extra Message', 'pwchangereminder' ), 'callback' => 'extra_message_field' ),
+				'field_2'	=> array( 'section' => 'extras', 'title' => __( 'Display On Frontend', 'pwchangereminder' ), 'callback' => 'display_frontend_field' ),
+				'field_3'	=> array( 'section' => 'extras', 'title' => __( 'Ignore Nag', 'pwchangereminder' ), 'callback' => 'ignore_field' ),
+				'field_4' => array( 'section' => 'extras', 'title' => __( 'Ignore Timeout', 'pwchangereminder' ), 'callback' => 'ignore_timeout_field' ),
+				'field_5' => array( 'section' => 'extras', 'title' => __( 'Extra Message', 'pwchangereminder' ), 'callback' => 'extra_message_field' ),
 		);
 
 		// register settings
@@ -218,7 +219,9 @@ class Backend extends Options_Handler
 
 		$input = array_merge( $options, $input );
 
+		// convert checkboxes (on or no value) into boolean
 		$input['user_can_ignore_nag'] = ( isset( $input['user_can_ignore_nag'] ) && 'on' === $input['user_can_ignore_nag'] ) ? true : false;
+		$input['frontend_allowed']    = ( isset( $input['frontend_allowed'] ) && 'on' === $input['frontend_allowed'] ) ? true : false;
 
 		// format pw_max_age: positive integer
 		$input['pw_max_age']         = abs( filter_var( $input['pw_max_age'], FILTER_SANITIZE_NUMBER_INT ) );
@@ -357,6 +360,25 @@ class Backend extends Options_Handler
 	public function extras_section() {
 
 		echo $this->get_text( __FUNCTION__ );
+
+		return true;
+
+	}
+
+	/**
+	 * Callback for ignoring the nag screen
+	 * @return boolean Always true
+	 */
+	public function display_frontend_field() {
+
+		$allow_frontend = self::get_option( 'frontend_allowed' );
+
+    printf(
+        '<input type="checkbox" name="%1$s[frontend_allowed]" id="%1$s-frontend_allowed"%2$s> <label for="%1$s-frontend_allowed">%3$s</label>',
+        self::OPTION_KEY,
+        checked( $allow_frontend, true, false ),
+        __( 'Nag screen will be also displayed on frontend', 'pwchangereminder' )
+    );
 
 		return true;
 
