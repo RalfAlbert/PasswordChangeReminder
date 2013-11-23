@@ -29,7 +29,6 @@
 namespace PwCR;
 
 use PwCR\Options_Handler\Options_Handler;
-
 use PwCR\Backend\Backend;
 
 ( ! defined( 'ABSPATH' ) ) AND die( "Standing On The Shoulders Of Giants" );
