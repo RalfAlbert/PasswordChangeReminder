@@ -34,8 +34,9 @@ class PwCR extends Options_Handler
 		// sorry for that. but translation have to be loaded very early or it won't work
 		add_action( 'init', array( $this, 'init_translation' ), 1, 0 );
 
-		add_action( 'admin_init', array( $this, 'add_scripts' ), 1, 0 );
-		add_action( 'admin_init', array( $this, 'check_pw_age' ), 1, 0 );
+		$hook = ( is_admin() ) ? 'admin_init' : 'init';
+		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 1, 0 );
+		add_action( $hook, array( $this, 'check_pw_age' ), 1, 0 );
 
 		// ajax
 		add_action( 'wp_ajax_ignore_nag', array( $this, 'ignore_nag' ), 10, 0 );
@@ -68,7 +69,7 @@ class PwCR extends Options_Handler
 		$script_dir = basename( $basename ) . "/scripts/pwcr_backend$min.js";
 		$script_url = plugins_url( $script_dir  );
 
-		wp_register_script( 'pwcr', $script_url, 'jquery', false, true );
+		wp_register_script( 'pwcr', $script_url, array( 'jquery' ), false, true );
 
 	}
 
@@ -120,14 +121,22 @@ class PwCR extends Options_Handler
 		$date_obj_now  = new \DateTime( 'now' );
 		$this->pw_age  = $date_obj_pw->diff( $date_obj_now );
 
-		$debug = true;
-		if ( $this->pw_age->days > $max_days ) {
-			add_action(
-				'admin_notices',
-				array( $this, 'display_nag' ),
-				10,
-				0
-			);
+		$hook = '';
+		$frontend = self::get_option( 'frontend_allowed' );
+
+		if ( is_admin() ) {
+			$hook = 'admin_notices';
+		} elseif ( true == $frontend ) {
+			$hook = 'wp_footer';
+		}
+
+		if ( $this->pw_age->days > $max_days && !empty( $hook ) ) {
+				add_action(
+					$hook,
+					array( $this, 'display_nag' ),
+					10,
+					0
+				);
 		}
 
 		return true;
@@ -230,11 +239,13 @@ class PwCR extends Options_Handler
 		if ( !empty( $extra_message ) )
 			$out .= sprintf( '<p>%s</p>', $extra_message );
 
-		echo '<div class="error" id="pwcr_nag">';
-		echo $out;
-		echo '<hr>';
-		echo $this->create_nag_links();
-		echo '</div>';
+		$css = ' style="position:fixed; top:5%; left:25%; width:50%; padding:5px; background:white; border:2px solid black; border-radius: 5px; border-left: 4px solid red"';
+
+		if( is_admin() )
+			$css = '';
+
+		echo sprintf( '<div class="error" id="pwcr_nag"%s>%s<hr>%s</div>', $css, $out, $this->create_nag_links() );
+
 
 	}
 

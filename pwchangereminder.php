@@ -104,3 +104,9 @@ function uninstall() {
 	$result = $wpdb->query( $sql );
 
 }
+
+/**
+ * For Debugging
+ * Removes the options on deactivation
+ */
+register_deactivation_hook( __FILE__, function () { uninstall(); } );
