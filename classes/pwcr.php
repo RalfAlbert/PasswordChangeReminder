@@ -64,17 +64,23 @@ class PwCR extends Options_Handler
 
 		$min = ( defined( 'SCRIPT_DEBUG' ) && true == SCRIPT_DEBUG ) ? '' : '.min';
 
-		$basename   = plugin_dir_path( dirname( __FILE__ ) );
-		$script_dir = basename( $basename ) . "/scripts/pwcr_backend$min.js";
+		$basename   = basename( plugin_dir_path( dirname( __FILE__ ) ) );
+
+		$script_dir = $basename . "/scripts/pwcr_backend$min.js";
+		$style_dir  = $basename . "/css/pwcr_frontend$min.css";
+
 		$script_url = plugins_url( $script_dir  );
+		$style_url  = plugins_url( $style_dir );
 
 		wp_register_script( 'pwcr', $script_url, array( 'jquery' ), false, true );
 
+		// on frontend, add the ajax-url and the stylesheet for nag screen
 		if ( !is_admin() ) {
 
 			$translation_array = array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) );
 			wp_localize_script( 'pwcr', 'PwCR', $translation_array );
 
+			wp_enqueue_style( 'pwcr', $style_url, false, false, 'all' );
 		}
 
 	}
@@ -245,12 +251,7 @@ class PwCR extends Options_Handler
 		if ( !empty( $extra_message ) )
 			$out .= sprintf( '<p>%s</p>', $extra_message );
 
-		$css = ' style="position:fixed; top:5%; left:25%; width:50%; padding:5px; background:white; border:2px solid black; border-radius: 5px; border-left: 4px solid red"';
-
-		if( is_admin() )
-			$css = '';
-
-		echo sprintf( '<div class="error" id="pwcr_nag"%s>%s<hr>%s</div>', $css, $out, $this->create_nag_links() );
+		echo sprintf( '<div class="error" id="pwcr_nag">%s<hr>%s</div>', $out, $this->create_nag_links() );
 
 
 	}
