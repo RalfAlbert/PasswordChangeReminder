@@ -70,6 +70,13 @@ class PwCR extends Options_Handler
 
 		wp_register_script( 'pwcr', $script_url, array( 'jquery' ), false, true );
 
+		if ( !is_admin() ) {
+
+			$translation_array = array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) );
+			wp_localize_script( 'pwcr', 'PwCR', $translation_array );
+
+		}
+
 	}
 
 	/**
