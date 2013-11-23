@@ -55,8 +55,11 @@ function init() {
 		require_once $class;
 	}
 
-	new PwCR;
-	new Backend;
+	// create objects if the function is NOT called during activation
+	if ( !defined( 'PwCR_ACTIVATION_PROCESS' ) || true != PwCR_ACTIVATION_PROCESS ) {
+		new PwCR;
+		new Backend;
+	}
 
 }
 
@@ -76,14 +79,18 @@ register_uninstall_hook(
  */
 function activate() {
 
+	if ( !defined( 'PwCR_ACTIVATION_PROCESS' ) )
+		define( 'PwCR_ACTIVATION_PROCESS', true );
+
 	init();
 
-	$opt_handler = new Options_Handler();
-	$defaults    = $opt_handler::get_option();
+	$pwcr = new PwCR();
+	$pwcr->init_translation();
+	$defaults = $pwcr::get_option();
 
 	// set default options only if no older options are available
 	if ( empty( $defaults ) || !is_array( $defaults ) )
-		$opt_handler::set_options();
+		$pwcr::set_options();
 
 }
 
@@ -109,4 +116,5 @@ function uninstall() {
  * For Debugging
  * Removes the options on deactivation
  */
-register_deactivation_hook( __FILE__, function () { uninstall(); } );
+if ( defined( 'WP_DEBUG' ) && true == WP_DEBUG )
+	register_deactivation_hook( __FILE__, function () { uninstall(); } );
