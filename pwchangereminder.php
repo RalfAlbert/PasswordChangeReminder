@@ -46,7 +46,7 @@ add_action(
 	0
 );
 
-function init() {
+function init( $is_active = true ) {
 
 	// load classes
 	$classes  = glob( plugin_dir_path( __FILE__ ) . 'classes/*.php' );
@@ -55,11 +55,16 @@ function init() {
 		require_once $class;
 	}
 
-	// create objects if the function is NOT called during activation
-	if ( !defined( 'PwCR_ACTIVATION_PROCESS' ) || true != PwCR_ACTIVATION_PROCESS ) {
+	/*
+	 * If the plugin is active, create the objects.
+	 * During the installation (activation), DO NOT create objects. This will be done by the activation-function.
+	 */
+	if ( true == $is_active ) {
 		new PwCR;
 		new Backend;
 	}
+
+	return true;
 
 }
 
@@ -79,10 +84,8 @@ register_uninstall_hook(
  */
 function activate() {
 
-	if ( !defined( 'PwCR_ACTIVATION_PROCESS' ) )
-		define( 'PwCR_ACTIVATION_PROCESS', true );
-
-	init();
+	// tell the init() function that the plugin is NOT active. The function should not create objects.
+	init( false );
 
 	$pwcr = new PwCR();
 	$pwcr->init_translation();
@@ -116,5 +119,4 @@ function uninstall() {
  * For Debugging
  * Removes the options on deactivation
  */
-if ( defined( 'WP_DEBUG' ) && true == WP_DEBUG )
-	register_deactivation_hook( __FILE__, function () { uninstall(); } );
+//if ( defined( 'WP_DEBUG' ) && true == WP_DEBUG ) register_deactivation_hook( __FILE__, function () { uninstall(); } );
