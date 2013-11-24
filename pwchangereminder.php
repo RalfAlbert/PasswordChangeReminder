@@ -15,7 +15,7 @@
 
 /**
  * Plugin Name:	Password Change Reminder
- * Plugin URI:	http://yoda.neun12.de
+ * Plugin URI:	http://wordpress.org/plugins/password-change-reminder/
  * Description:	Reminds the user to frequently change the password. Display a nag screen if the password is to old.
  * Version:     0.2.20131123
  * Author:      Ralf Albert
@@ -99,8 +99,8 @@ function activate() {
 
 /**
  * On uninstall:
- * - remove field 'pw_age' from usermeta
- * - remove options
+ * - remove field 'PwCR_user_meta' from usermeta
+ * - remove option 'PwCR'
  */
 function uninstall() {
 

@@ -32,3 +32,16 @@ If you want to install the plugin manually:
 * 0.2.20131123 - Add nag screen to frontend
 
 ## Arbitrary section ##
+
+## Screenshots ##
+* Nag screen on backend (with MP6 admin style)
+
+![Nag screen on backend (with MP6 admin style)](assets/screenshot-1.png "Backend")
+
+* Settings
+
+![Settings](assets/screenshot-2.png "Settings")
+
+* Nag screen on frontend
+
+![Nag screen on Frontend](assets/screenshot-3.png "Frontend")
