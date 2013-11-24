@@ -25,8 +25,23 @@ If you want to install the plugin manually:
 ## Changelog ##
 
 ### 0.1 ###
-* First public version
-0.1.20131120 - First commit to GitHub
-0.1.20131121 - Some optimazation; adding/edit documentation
+* 0.1.20131120 - First commit to GitHub
+* 0.1.20131121 - Some optimazation; adding/edit documentation
+
+### 0.2 ###
+* 0.2.20131123 - Add nag screen to frontend
 
 ## Arbitrary section ##
+
+## Screenshots ##
+* Nag screen on backend (with MP6 admin style)
+
+![Nag screen on backend (with MP6 admin style)](assets/screenshot-1.png "Backend")
+
+* Settings
+
+![Settings](assets/screenshot-2.png "Settings")
+
+* Nag screen on frontend
+
+![Nag screen on Frontend](assets/screenshot-3.png "Frontend")

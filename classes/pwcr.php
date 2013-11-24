@@ -9,7 +9,7 @@
  * @subpackage PwCr\PwCR
  * @author     Ralf Albert <me@neun12.de>
  * @license    GPLv3 http://www.gnu.org/licenses/gpl-3.0.txt
- * @version    0.1.20131121
+ * @version    0.2.20131123
  * @link       http://wordpress.com
  */
 
@@ -34,8 +34,8 @@ class PwCR extends Options_Handler
 		// sorry for that. but translation have to be loaded very early or it won't work
 		add_action( 'init', array( $this, 'init_translation' ), 1, 0 );
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts' ), 1, 0 );
-		add_action( 'admin_init', array( $this, 'check_pw_age' ), 1, 0 );
+		add_action( ( is_admin() ? 'admin_enqueue_scripts' : 'wp_enqueue_scripts' ), array( $this, 'add_scripts' ), 1, 0 );
+		add_action( ( is_admin() ? 'admin_init' : 'init' ), array( $this, 'check_pw_age' ), 1, 0 );
 
 		// ajax
 		add_action( 'wp_ajax_ignore_nag', array( $this, 'ignore_nag' ), 10, 0 );
@@ -53,7 +53,7 @@ class PwCR extends Options_Handler
 
 		$basename    = plugin_dir_path( dirname( __FILE__ ) );
 		$lang_dir_td = basename( $basename ) . '/languages';
-		load_plugin_textdomain( 'pwcr_free', false, $lang_dir_td );
+		load_plugin_textdomain( 'pwchangereminder', false, $lang_dir_td );
 
 	}
 
@@ -64,11 +64,24 @@ class PwCR extends Options_Handler
 
 		$min = ( defined( 'SCRIPT_DEBUG' ) && true == SCRIPT_DEBUG ) ? '' : '.min';
 
-		$basename   = plugin_dir_path( dirname( __FILE__ ) );
-		$script_dir = basename( $basename ) . "/scripts/pwcr_backend$min.js";
+		$basename   = basename( plugin_dir_path( dirname( __FILE__ ) ) );
+
+		$script_dir = $basename . "/scripts/pwcr_backend$min.js";
+		$style_dir  = $basename . "/css/pwcr_frontend$min.css";
+
 		$script_url = plugins_url( $script_dir  );
+		$style_url  = plugins_url( $style_dir );
 
 		wp_register_script( 'pwcr', $script_url, array( 'jquery' ), false, true );
+
+		// on frontend, add the ajax-url and the stylesheet for nag screen
+		if ( !is_admin() ) {
+
+			$translation_array = array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) );
+			wp_localize_script( 'pwcr', 'PwCR', $translation_array );
+
+			wp_enqueue_style( 'pwcr', $style_url, false, false, 'all' );
+		}
 
 	}
 
@@ -120,14 +133,22 @@ class PwCR extends Options_Handler
 		$date_obj_now  = new \DateTime( 'now' );
 		$this->pw_age  = $date_obj_pw->diff( $date_obj_now );
 
-		$debug = true;
-		if ( $this->pw_age->days > $max_days ) {
-			add_action(
-				'admin_notices',
-				array( $this, 'display_nag' ),
-				10,
-				0
-			);
+		$hook = '';
+		$frontend = self::get_option( 'frontend_allowed' );
+
+		if ( is_admin() ) {
+			$hook = 'admin_notices';
+		} elseif ( true == $frontend ) {
+			$hook = 'wp_footer';
+		}
+
+		if ( $this->pw_age->days > $max_days && !empty( $hook ) ) {
+				add_action(
+					$hook,
+					array( $this, 'display_nag' ),
+					10,
+					0
+				);
 		}
 
 		return true;
@@ -210,19 +231,19 @@ class PwCR extends Options_Handler
 		if( true == self::get_option( 'user_can_ignore_nag' ) )
 			wp_enqueue_script( 'pwcr' );
 
-		$out  = sprintf( '<h3>%s</h3>', __( 'Your password is outdated!', 'pwcr_free' ) );
-		$out .= sprintf( '<p>' . __( 'The password is %d days old. ', 'pwcr_free' ), $this->pw_age->days );
+		$out  = sprintf( '<h3>%s</h3>', __( 'Your password is outdated!', 'pwchangereminder' ) );
+		$out .= sprintf( '<p>' . __( 'The password is %d days old. ', 'pwchangereminder' ), $this->pw_age->days );
 
 		if ( $this->pw_age->y > 0 ) {
-			$inner = sprintf( _n( '1 year.', '%d years.', $this->pw_age->y, 'pwcr_free' ), $this->pw_age->y );
+			$inner = sprintf( _n( '1 year.', '%d years.', $this->pw_age->y, 'pwchangereminder' ), $this->pw_age->y );
 		} elseif ( $this->pw_age->m > 0 ) {
-			$inner = sprintf( _n( '1 month.', '%d months.', $this->pw_age->m, 'pwcr_free' ), $this->pw_age->m );
+			$inner = sprintf( _n( '1 month.', '%d months.', $this->pw_age->m, 'pwchangereminder' ), $this->pw_age->m );
 		} else {
 			$inner = '';
 		}
 
 		if ( !empty( $inner ) )
-			$out .= __( 'This means your password is older than ', 'pwcr_free' ) . $inner;
+			$out .= __( 'This means your password is older than ', 'pwchangereminder' ) . $inner;
 
 		$out .= '</p>';
 
@@ -230,11 +251,7 @@ class PwCR extends Options_Handler
 		if ( !empty( $extra_message ) )
 			$out .= sprintf( '<p>%s</p>', $extra_message );
 
-		echo '<div class="error" id="pwcr_nag">';
-		echo $out;
-		echo '<hr>';
-		echo $this->create_nag_links();
-		echo '</div>';
+		echo sprintf( '<div class="error" id="pwcr_nag">%s<hr>%s</div>', $out, $this->create_nag_links() );
 
 	}
 
@@ -247,8 +264,8 @@ class PwCR extends Options_Handler
 		$ignoring_allowed = self::get_option( 'user_can_ignore_nag' );
 
 		$links = array(
-				'change_pw' => sprintf( '<a href="%s" id="pwcr_change_pw" class="button">%s</a>', admin_url( '/profile.php' ), __( 'Change password', 'pwcr_free' ) ),
-				'ignore'    => sprintf( '<a href="#" id="pwcr_ignore_nag" class="button">%s</a>', __( 'Ignore', 'pwcr_free' ) ),
+				'change_pw' => sprintf( '<a href="%s" id="pwcr_change_pw" class="button">%s</a>', admin_url( '/profile.php' ), __( 'Change password', 'pwchangereminder' ) ),
+				'ignore'    => sprintf( '<a href="#" id="pwcr_ignore_nag" class="button">%s</a>', __( 'Ignore', 'pwchangereminder' ) ),
 		);
 
 		// if the user is not allowed to ignore the nag, remove the ignore nag link

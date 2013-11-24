@@ -9,18 +9,18 @@
  * @subpackage PwCR
  * @author     Ralf Albert <me@neun12.de>
  * @license    GPLv3 http://www.gnu.org/licenses/gpl-3.0.txt
- * @version    0.1.20131121
+ * @version    0.2.20131123
  * @link       http://wordpress.com
  */
 
 /**
  * Plugin Name:	Password Change Reminder
- * Plugin URI:	http://yoda.neun12.de
+ * Plugin URI:	http://wordpress.org/plugins/password-change-reminder/
  * Description:	Reminds the user to frequently change the password. Display a nag screen if the password is to old.
- * Version:     0.1.20131121
+ * Version:     0.2.20131123
  * Author:      Ralf Albert
  * Author URI: 	http://yoda.neun12.de
- * Text Domain: pwcr_free
+ * Text Domain: pwchangereminder
  * Domain Path: /languages
  * Network:     false
  * License:     GPLv3
@@ -46,7 +46,7 @@ add_action(
 	0
 );
 
-function init() {
+function init( $is_active = true ) {
 
 	// load classes
 	$classes  = glob( plugin_dir_path( __FILE__ ) . 'classes/*.php' );
@@ -55,11 +55,16 @@ function init() {
 		require_once $class;
 	}
 
-	// create objects if the function is NOT called during activation
-	if ( !defined( 'PwCR_ACTIVATION_PROCESS' ) || true != PwCR_ACTIVATION_PROCESS ) {
+	/*
+	 * If the plugin is active, create the objects.
+	 * During the installation (activation), DO NOT create objects. This will be done by the activation-function.
+	 */
+	if ( true == $is_active ) {
 		new PwCR;
 		new Backend;
 	}
+
+	return true;
 
 }
 
@@ -79,10 +84,8 @@ register_uninstall_hook(
  */
 function activate() {
 
-	if ( !defined( 'PwCR_ACTIVATION_PROCESS' ) )
-		define( 'PwCR_ACTIVATION_PROCESS', true );
-
-	init();
+	// tell the init() function that the plugin is NOT active. The function should not create objects.
+	init( false );
 
 	$pwcr = new PwCR();
 	$pwcr->init_translation();
@@ -96,8 +99,8 @@ function activate() {
 
 /**
  * On uninstall:
- * - remove field 'pw_age' from usermeta
- * - remove options
+ * - remove field 'PwCR_user_meta' from usermeta
+ * - remove option 'PwCR'
  */
 function uninstall() {
 
@@ -116,5 +119,4 @@ function uninstall() {
  * For Debugging
  * Removes the options on deactivation
  */
-if ( defined( 'WP_DEBUG' ) && true == WP_DEBUG )
-	register_deactivation_hook( __FILE__, function () { uninstall(); } );
+//if ( defined( 'WP_DEBUG' ) && true == WP_DEBUG ) register_deactivation_hook( __FILE__, function () { uninstall(); } );

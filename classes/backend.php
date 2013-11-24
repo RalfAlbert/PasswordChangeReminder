@@ -9,7 +9,7 @@
  * @subpackage PwCr\Backend
  * @author     Ralf Albert <me@neun12.de>
  * @license    GPLv3 http://www.gnu.org/licenses/gpl-3.0.txt
- * @version    0.1.20131121
+ * @version    0.2.20131123
  * @link       http://wordpress.com
  */
 
@@ -61,17 +61,18 @@ class Backend extends Options_Handler
 		// the sections
 		$sections = array(
 			// section-id => title, callback
-			'interval' => array( 'title' => __( 'Interval settings', 'pwcr_free' ), 'callback' => 'interval_section' ),
-			'extras'   => array( 'title' => __( 'Extras settings', 'pwcr_free' ), 'callback' => 'extras_section' ),
+			'interval' => array( 'title' => __( 'Interval settings', 'pwchangereminder' ), 'callback' => 'interval_section' ),
+			'extras'   => array( 'title' => __( 'Extras settings', 'pwchangereminder' ), 'callback' => 'extras_section' ),
 		);
 
 		// fields for the sections
 		$fields = array(
 				// field-id => in-section, title, callback
-				'field_1'	=> array( 'section' => 'interval', 'title' => __( 'Interval', 'pwcr_free' ), 'callback' => 'interval_field' ),
-				'field_2'	=> array( 'section' => 'extras', 'title' => __( 'Ignore Nag', 'pwcr_free' ), 'callback' => 'ignore_field' ),
-				'field_3' => array( 'section' => 'extras', 'title' => __( 'Ignore Timeout', 'pwcr_free' ), 'callback' => 'ignore_timeout_field' ),
-				'field_4' => array( 'section' => 'extras', 'title' => __( 'Extra Message', 'pwcr_free' ), 'callback' => 'extra_message_field' ),
+				'field_1'	=> array( 'section' => 'interval', 'title' => __( 'Interval', 'pwchangereminder' ), 'callback' => 'interval_field' ),
+				'field_2'	=> array( 'section' => 'extras', 'title' => __( 'Display On Frontend', 'pwchangereminder' ), 'callback' => 'display_frontend_field' ),
+				'field_3'	=> array( 'section' => 'extras', 'title' => __( 'Ignore Nag', 'pwchangereminder' ), 'callback' => 'ignore_field' ),
+				'field_4' => array( 'section' => 'extras', 'title' => __( 'Ignore Timeout', 'pwchangereminder' ), 'callback' => 'ignore_timeout_field' ),
+				'field_5' => array( 'section' => 'extras', 'title' => __( 'Extra Message', 'pwchangereminder' ), 'callback' => 'extra_message_field' ),
 		);
 
 		// register settings
@@ -112,8 +113,8 @@ class Backend extends Options_Handler
 			return false;
 
 		$this->pagehook = add_options_page(
-		    __( 'PW Change Reminder', 'pwcr_free' ),
-		    __( 'PW Change Reminder', 'pwcr_free' ),
+		    __( 'PW Change Reminder', 'pwchangereminder' ),
+		    __( 'PW Change Reminder', 'pwchangereminder' ),
 		    'manage_options',
 		    self::MENU_SLUG,
 		    array( $this, 'main_section' ),
@@ -218,7 +219,9 @@ class Backend extends Options_Handler
 
 		$input = array_merge( $options, $input );
 
+		// convert checkboxes (on or no value) into boolean
 		$input['user_can_ignore_nag'] = ( isset( $input['user_can_ignore_nag'] ) && 'on' === $input['user_can_ignore_nag'] ) ? true : false;
+		$input['frontend_allowed']    = ( isset( $input['frontend_allowed'] ) && 'on' === $input['frontend_allowed'] ) ? true : false;
 
 		// format pw_max_age: positive integer
 		$input['pw_max_age']         = abs( filter_var( $input['pw_max_age'], FILTER_SANITIZE_NUMBER_INT ) );
@@ -279,7 +282,7 @@ class Backend extends Options_Handler
 		settings_fields( self::OPTION_KEY );
 		do_settings_sections( self::MENU_SLUG );
 
-		submit_button( __( 'Save Changes', 'pwcr_free' ), 'primary', 'submit_options', true );
+		submit_button( __( 'Save Changes', 'pwchangereminder' ), 'primary', 'submit_options', true );
 
 		echo '</form>';
 		echo '</div>';
@@ -327,10 +330,10 @@ class Backend extends Options_Handler
     );
 
 		$option_values = array(
-			'days'   => __( 'Day(s)', 'pwcr_free' ),
-			'weeks'  => __( 'Week(s)', 'pwcr_free' ),
-			'months' => __( 'Month(s)', 'pwcr_free' ),
-			'years'  => __( 'Year(s)', 'pwcr_free' )
+			'days'   => __( 'Day(s)', 'pwchangereminder' ),
+			'weeks'  => __( 'Week(s)', 'pwchangereminder' ),
+			'months' => __( 'Month(s)', 'pwchangereminder' ),
+			'years'  => __( 'Year(s)', 'pwchangereminder' )
 		);
 
 		$options_output = '';
@@ -366,6 +369,25 @@ class Backend extends Options_Handler
 	 * Callback for ignoring the nag screen
 	 * @return boolean Always true
 	 */
+	public function display_frontend_field() {
+
+		$allow_frontend = self::get_option( 'frontend_allowed' );
+
+    printf(
+        '<input type="checkbox" name="%1$s[frontend_allowed]" id="%1$s-frontend_allowed"%2$s> <label for="%1$s-frontend_allowed">%3$s</label>',
+        self::OPTION_KEY,
+        checked( $allow_frontend, true, false ),
+        __( 'Nag screen will be also displayed on frontend', 'pwchangereminder' )
+    );
+
+		return true;
+
+	}
+
+	/**
+	 * Callback for ignoring the nag screen
+	 * @return boolean Always true
+	 */
 	public function ignore_field() {
 
 		$allow_ignore = self::get_option( 'user_can_ignore_nag' );
@@ -374,7 +396,7 @@ class Backend extends Options_Handler
         '<input type="checkbox" name="%1$s[user_can_ignore_nag]" id="%1$s-user_can_ignore_nag"%2$s> <label for="%1$s-user_can_ignore_nag">%3$s</label>',
         self::OPTION_KEY,
         checked( $allow_ignore, true, false ),
-        __( 'User can ignore (hide) the nag screen?', 'pwcr_free' )
+        __( 'User can ignore (hide) the nag screen?', 'pwchangereminder' )
     );
 
 		return true;
@@ -388,8 +410,8 @@ class Backend extends Options_Handler
 	public function ignore_timeout_field() {
 
 		$max_ignore_time = self::get_option( 'max_ignore_time' );
-		$hint = __( 'After which periode should an ignored nag screen will be displayed again (hh:mm)', 'pwcr_free' );
-		$unit = __( 'hh:mm', 'pwcr_free' );
+		$hint = __( 'After which periode should an ignored nag screen will be displayed again (hh:mm)', 'pwchangereminder' );
+		$unit = __( 'hh:mm', 'pwchangereminder' );
 
 		$mit = explode( ':', $max_ignore_time );
 		if ( !is_array( $mit ) || 2 > sizeof( $mit ) )
@@ -421,9 +443,9 @@ class Backend extends Options_Handler
 	public function extra_message_field() {
 
 		$extra_message = self::get_option( 'extra_message' );
-		$hint          = __( 'Enter an additional message for the user, it will be displayed in the nag screen.', 'pwcr_free' );
+		$hint          = __( 'Enter an additional message for the user, it will be displayed in the nag screen.', 'pwchangereminder' );
 		$hint          .= '<br>';
-		$hint          .= __( 'Keep blank for no message. Some HTML is allowed.', 'pwcr_free' );
+		$hint          .= __( 'Keep blank for no message. Some HTML is allowed.', 'pwchangereminder' );
 
 		printf(
 				'<textarea name="%1$s[extra_message]" id="%1$s-extra_message" cols="50" rows="5">%2$s</textarea><br>%3$s',

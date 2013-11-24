@@ -32,12 +32,18 @@ If you want to install the plugin manually:
 
 == Screenshots ==
 
+1. Nag screen on backend (with MP6 admin style)
+2. Settings
+3. Nag screen on frontend
+
 == Changelog ==
 
 = 0.1.20131120 =
+First public version
 = 0.1.20131121 =
 Some optimazion; adding/edit documentation
 
-* First public version
+= 0.2.20131123 =
+Add nag screen to frontend
 
 == Arbitrary section ==

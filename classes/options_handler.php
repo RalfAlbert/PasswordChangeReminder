@@ -9,7 +9,7 @@
  * @subpackage PwCr\Options_Handler
  * @author     Ralf Albert <me@neun12.de>
  * @license    GPLv3 http://www.gnu.org/licenses/gpl-3.0.txt
- * @version    0.1.20131121
+ * @version    0.2.20131123
  * @link       http://wordpress.com
  */
 
@@ -75,11 +75,12 @@ class Options_Handler
 	public static function get_default_option( $what = '' ) {
 
 		$default_options = array(
-				'pw_max_age'          => 90,		    // integer; days
+				'pw_max_age'          => 90,		        // integer; days
 				'pw_max_age_periode'  => 'days',        // string (one of days, weeks, months, years)
-				'extra_message'       => __( 'We expect that the password is changed at least every 3 months.', 'pwcr_free' ),
+				'extra_message'       => __( 'We expect that the password is changed at least every 3 months.', 'pwchangereminder' ),
 				'user_can_ignore_nag' => true,          // boolean
-				'max_ignore_time'     => '00:15',		// in hh:mm; 2 digits w. leading 0
+				'max_ignore_time'     => '00:15',		    // in hh:mm; 2 digits w. leading 0
+				'frontend_allowed'    => true,          // true if the nag scrteen should also been displayed on frontend
 		);
 
 		// return single option
